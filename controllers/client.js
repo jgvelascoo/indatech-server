@@ -30,13 +30,12 @@ export const getSubCategories = async (req, res) => {
 
   try {
 
-    let query = { ...req.query };
+    let req_query = { ...req.query };
+    let query = { enabled: true };
 
-    if (query.hasOwnProperty('category')) {
-      query = { ...query,  enabled: true}
-    } else  {
-      query = { enabled: true };
-    }
+    if (req_query.hasOwnProperty('category')) {
+      query = { ...query, category: req_query.category }
+    } 
 
     const items = await SubCategoryDB.find(query).sort('name');
     res.status(200).json(items);
@@ -54,15 +53,18 @@ export const getBrands = async (req, res) => {
 
   try {
 
-    let query = { ...req.query };
+    let req_query = { ...req.query };
+    let query = { enabled: true };
 
-    if (query.hasOwnProperty('category')) {
-      query = { category: query.category,  enabled: true}
-    } else  {
-      query = { enabled: true };
+    if (req_query.hasOwnProperty('category')) {
+      query = { ...query, category: req_query.category };
     }
 
-    const items = await BrandDB.find({ enabled: true }).sort('name');
+    if (req_query.hasOwnProperty('subcategory')) {
+      query = { ...query, subcategory: req_query.subcategory };
+    }
+
+    const items = await BrandDB.find(query).sort('name');
     res.status(200).json(items);
 
   } catch (error) {
