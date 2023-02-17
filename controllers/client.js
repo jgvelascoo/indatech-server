@@ -123,7 +123,7 @@ export const getProducts = async (req, res) => {
 
     const count = await InventoryDB.countDocuments(query);
     const items = await InventoryDB.find(query).sort(SORT_CASES[sort]).skip(startIndex).limit(LIMIT);
-    res.status(200).json({ data: items, currentPage: Number(page), numberOfPages: Math.ceil(count / LIMIT), count: count, filters });
+    res.status(200).json({ data: items, currentPage: Number(page), numberOfPages: Math.ceil(count / LIMIT), count: count, limit: LIMIT, filters });
 
   } catch (error) {
 
