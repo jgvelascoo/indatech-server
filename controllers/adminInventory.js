@@ -28,7 +28,7 @@ export const getAllProducts = async (req, res) => {
 export const createProduct = async (req, res) => {
 
   const { category, subcategory, brand, model, version, price, discount, quantity, processor, ram, ssd, screen,
-          graphics, details, folder, mainImgN, othersImgN, mainImgD, othersImgD, enabled } = req.body;
+          graphics, details, location, folder, mainImgN, othersImgN, mainImgD, othersImgD, enabled } = req.body;
 
   try {
 
@@ -74,7 +74,7 @@ export const createProduct = async (req, res) => {
     }
 
     const newItem = new InventoryDB({ category, subcategory, brand, model, version, price, discount, quantity, processor, 
-                                 ram, ssd, screen, graphics, details, folder, mainImg, othersImg, enabled })
+                                 ram, ssd, screen, graphics, details, location, folder, mainImg, othersImg, enabled })
 
     await newItem.save();
 
@@ -92,11 +92,11 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
 
   const { id } = req.params;
-
+  
   if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No product with id: ${id}`);
 
   const { category, subcategory, brand, model, version, price, discount, quantity, processor, ram, ssd, screen,
-          graphics, details, folder, mainImg, othersImg, mainImgN, othersImgN, mainImgD, othersImgD, enabled } = req.body;
+          graphics, details, location, folder, mainImg, othersImg, mainImgN, othersImgN, mainImgD, othersImgD, enabled } = req.body;
 
   try {
 
@@ -133,12 +133,12 @@ export const updateProduct = async (req, res) => {
     }
 
     let updatedAt = new Date();
-
+    console.log(location);
     const updatedItem = { category, subcategory, brand, model, version, price, discount, quantity, processor, 
-                          ram, ssd, screen, graphics, details, folder, mainImg, othersImg, updatedAt, enabled };
+                          ram, ssd, screen, graphics, details, location, folder, mainImg, othersImg, updatedAt, enabled };
 
     await InventoryDB.findByIdAndUpdate(id, updatedItem, { new: true });
-
+    
     res.json(updatedItem);
 
   } catch (error) {
