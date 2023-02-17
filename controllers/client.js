@@ -96,8 +96,8 @@ export const getProducts = async (req, res) => {
 
   const SORT_CASES = {
     'reciente': '-createdAt -_id',
-    'descendente': '-price -id',
-    'ascendente': 'price -id'
+    'descendente': '-price -_id',
+    'ascendente': 'price -_id'
   }
 
   try {
@@ -123,7 +123,7 @@ export const getProducts = async (req, res) => {
 
     const count = await InventoryDB.countDocuments(query);
     const items = await InventoryDB.find(query).sort(SORT_CASES[sort]).skip(startIndex).limit(LIMIT);
-    res.status(200).json({ data: items, currentPage: Number(page), numberOfPages: Math.ceil(count / LIMIT), filters });
+    res.status(200).json({ data: items, currentPage: Number(page), numberOfPages: Math.ceil(count / LIMIT), count: count, filters });
 
   } catch (error) {
 
