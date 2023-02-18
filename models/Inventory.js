@@ -8,6 +8,7 @@ const inventorySchema = mongoose.Schema({
   version: String,
   price: Number,
   discount: Number,
+  finalPrice: Number,
   quantity: Number,
   processor: String,
   ram: String,

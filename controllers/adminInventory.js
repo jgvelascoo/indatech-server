@@ -30,6 +30,8 @@ export const createProduct = async (req, res) => {
   const { category, subcategory, brand, model, version, price, discount, quantity, processor, ram, ssd, screen,
           graphics, details, location, folder, mainImgN, othersImgN, mainImgD, othersImgD, enabled } = req.body;
 
+  finalPrice = Math.ceil( price * (discount / 100) );
+
   try {
 
     var imagekit = new ImageKit({
@@ -73,8 +75,9 @@ export const createProduct = async (req, res) => {
 
     }
 
-    const newItem = new InventoryDB({ category, subcategory, brand, model, version, price, discount, quantity, processor, 
-                                 ram, ssd, screen, graphics, details, location, folder, mainImg, othersImg, enabled })
+    const newItem = new InventoryDB({ category, subcategory, brand, model, version, price, discount, finalPrice, 
+                                      quantity, processor, ram, ssd, screen, graphics, details, location, folder, 
+                                      mainImg, othersImg, enabled })
 
     await newItem.save();
 
@@ -97,6 +100,8 @@ export const updateProduct = async (req, res) => {
 
   const { category, subcategory, brand, model, version, price, discount, quantity, processor, ram, ssd, screen,
           graphics, details, location, folder, mainImg, othersImg, mainImgN, othersImgN, mainImgD, othersImgD, enabled } = req.body;
+
+  finalPrice = Math.ceil( price * (discount / 100) );
 
   try {
 
@@ -133,8 +138,8 @@ export const updateProduct = async (req, res) => {
     }
 
     let updatedAt = new Date();
-    console.log(location);
-    const updatedItem = { category, subcategory, brand, model, version, price, discount, quantity, processor, 
+    
+    const updatedItem = { category, subcategory, brand, model, version, price, discount, finalPrice, quantity, processor, 
                           ram, ssd, screen, graphics, details, location, folder, mainImg, othersImg, updatedAt, enabled };
 
     await InventoryDB.findByIdAndUpdate(id, updatedItem, { new: true });

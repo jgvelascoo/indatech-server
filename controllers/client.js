@@ -96,8 +96,8 @@ export const getProducts = async (req, res) => {
 
   const SORT_CASES = {
     'reciente': '-createdAt -_id',
-    'descendente': '-price -_id',
-    'ascendente': 'price -_id'
+    'descendente': '-finalPrice -_id',
+    'ascendente': 'finalPrice -_id'
   }
 
   try {
