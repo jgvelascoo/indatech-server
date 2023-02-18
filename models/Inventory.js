@@ -12,7 +12,7 @@ const inventorySchema = mongoose.Schema({
   quantity: Number,
   processor: String,
   ram: String,
-  ssd: String,
+  storage: String,
   screen: String,
   graphics: String,
   details: String,
