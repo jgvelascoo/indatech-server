@@ -7,7 +7,9 @@ import { getProducts,
          getBrands,
          getCategories,
          getSubCategories,
-         getLocations } from '../controllers/client.js';
+         getLocations,
+         getOfferProducts,
+         getLatestOfferProducts } from '../controllers/client.js';
 
 
 const router = express.Router();
@@ -22,6 +24,8 @@ router.get('/categories', getCategories);
 router.get('/subcategories', getSubCategories);
 router.get('/categories', getCategories);
 router.get('/locations', getLocations);
+router.get('/offers/search', getOfferProducts);
+router.get('/offers/latest', getLatestOfferProducts);
 
 
 export default router;

@@ -151,12 +151,63 @@ export const getProduct = async (req, res) => {
 }
 
 
+export const getOfferProducts = async (req, res) => {
+
+  const SORT_CASES = {
+    'reciente': '-updatedAt -_id',
+    'descendente': '-finalPrice -_id',
+    'ascendente': 'finalPrice -_id'
+  }
+
+  try {
+
+    const LIMIT = 8;
+    let query = { ...req.query };
+    let filters = { ...req.query };
+    const sort = query.sort || 'reciente';
+    const page = query.page || 1;
+    delete query.page;
+    delete query.sort;
+    const startIndex = (Number(page) - 1) * LIMIT;
+    
+    query = { discount: { $gt: 0 } };
+
+    const count = await InventoryDB.countDocuments(query);
+    const items = await InventoryDB.find(query).sort(SORT_CASES[sort]).skip(startIndex).limit(LIMIT);
+    res.status(200).json({ data: items, currentPage: Number(page), numberOfPages: Math.ceil(count / LIMIT), count: count, limit: LIMIT, filters });
+
+  } catch (error) {
+
+    res.status(404).json({ message: error.message });
+
+  }
+
+}
+
+
 export const getLatestProducts = async (req, res) => {
 
   try {
 
     const LIMIT = 3;
     const items = await InventoryDB.find().sort('-createdAt -_id').limit(LIMIT);
+    res.status(200).json({ items });
+
+  } catch (error) {
+
+    res.status(404).json({ message: error.message });
+
+  }
+
+}
+
+
+export const getLatestOfferProducts = async (req, res) => {
+
+  try {
+
+    const LIMIT = 5;
+    const items = await InventoryDB.find({ discount: { $gt: 0 } }).sort('-updatedAt -_id').limit(LIMIT);
     res.status(200).json({ items });
 
   } catch (error) {
