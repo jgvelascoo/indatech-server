@@ -16,6 +16,7 @@ const inventorySchema = mongoose.Schema({
   screen: String,
   graphics: String,
   details: String,
+  status: String,
   folder: String,
   mainImg: String,
   othersImg: [String],

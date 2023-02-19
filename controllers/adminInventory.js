@@ -28,9 +28,9 @@ export const getAllProducts = async (req, res) => {
 export const createProduct = async (req, res) => {
 
   const { category, subcategory, brand, model, version, price, discount, quantity, processor, ram, storage, screen,
-          graphics, details, location, folder, mainImgN, othersImgN, mainImgD, othersImgD, enabled } = req.body;
+          graphics, details, status, location, folder, mainImgN, othersImgN, mainImgD, othersImgD, enabled } = req.body;
 
-  finalPrice = Math.ceil( price * (discount / 100) );
+  finalPrice = Math.ceil( price * (1 - (discount / 100) ));
 
   try {
 
@@ -76,8 +76,8 @@ export const createProduct = async (req, res) => {
     }
 
     const newItem = new InventoryDB({ category, subcategory, brand, model, version, price, discount, finalPrice, 
-                                      quantity, processor, ram, storage, screen, graphics, details, location, folder, 
-                                      mainImg, othersImg, enabled })
+                                      quantity, processor, ram, storage, screen, graphics, details, status, location, 
+                                      folder, mainImg, othersImg, enabled })
 
     await newItem.save();
 
@@ -99,9 +99,10 @@ export const updateProduct = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No product with id: ${id}`);
 
   const { category, subcategory, brand, model, version, price, discount, quantity, processor, ram, storage, screen,
-          graphics, details, location, folder, mainImg, othersImg, mainImgN, othersImgN, mainImgD, othersImgD, enabled } = req.body;
+          graphics, details, status, location, folder, mainImg, othersImg, mainImgN, othersImgN, mainImgD, othersImgD, 
+          enabled } = req.body;
 
-  finalPrice = Math.ceil( price * (discount / 100) );
+  finalPrice = Math.ceil( price * (1 - (discount / 100) ));
 
   try {
 
@@ -139,8 +140,9 @@ export const updateProduct = async (req, res) => {
 
     let updatedAt = new Date();
     
-    const updatedItem = { category, subcategory, brand, model, version, price, discount, finalPrice, quantity, processor, 
-                          ram, storage, screen, graphics, details, location, folder, mainImg, othersImg, updatedAt, enabled };
+    const updatedItem = { category, subcategory, brand, model, version, price, discount, finalPrice, quantity, 
+                          processor, ram, storage, screen, graphics, details, status, location, folder, mainImg, 
+                          othersImg, updatedAt, enabled };
 
     await InventoryDB.findByIdAndUpdate(id, updatedItem, { new: true });
     
