@@ -189,7 +189,7 @@ export const getLatestProducts = async (req, res) => {
 
   try {
 
-    const LIMIT = 3;
+    const LIMIT = 4;
     const items = await InventoryDB.find().sort('-createdAt -_id').limit(LIMIT);
     res.status(200).json({ items });
 
