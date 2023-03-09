@@ -191,7 +191,7 @@ export const getLatestProducts = async (req, res) => {
 
     const LIMIT = 3;
     const items = await InventoryDB.find().sort('-createdAt -_id').limit(LIMIT);
-    res.status(200).json({ items });
+    res.status(200).json({ data: items });
 
   } catch (error) {
 
@@ -208,7 +208,7 @@ export const getLatestOfferProducts = async (req, res) => {
 
     const LIMIT = 5;
     const items = await InventoryDB.find({ discount: { $gt: 0 } }).sort('-updatedAt -_id').limit(LIMIT);
-    res.status(200).json({ items });
+    res.status(200).json({ data: items });
 
   } catch (error) {
 
@@ -232,7 +232,7 @@ export const getRecommendationProducts = async (req, res) => {
     const initialReq = await InventoryDB.countDocuments(query);
     let items = await InventoryDB.find(query).sort('-createdAt -_id').limit(LIMIT);
     if (initialReq >= LIMIT) {
-      res.status(200).json({ items });
+      res.status(200).json({ data: items });
     } else {
       let reqIdList = [reqId];
       if (initialReq > 0) {
@@ -242,7 +242,7 @@ export const getRecommendationProducts = async (req, res) => {
       }
       const latestItems = await InventoryDB.find({ _id: { $nin: reqIdList } }).sort('-createdAt -_id').limit(LIMIT - initialReq);
       items = items.concat(latestItems);
-      res.status(200).json({ items });
+      res.status(200).json({ data: items });
     }
 
   } catch (error) {
